@@ -1,9 +1,17 @@
 package com.example.gymsecurity.API.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "roles")
+@Table(name="roles")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class Role {
 
     @Id
