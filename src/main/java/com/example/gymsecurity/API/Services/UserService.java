@@ -75,7 +75,7 @@ public class UserService {
                 // Usuários cadastrados normalmente recebem a role CUSTOMER
                 .roles(List.of(
                         Role.builder()
-                                .name(RoleName.valueOf("CUSTOMER"))
+                                .name(RoleName.valueOf("ROLE_CUSTOMER"))
                                 .build()
                 ))
                 .build();
