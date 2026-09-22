@@ -23,8 +23,10 @@ public class SecurityConfiguration {
 
 
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            "/users/login", //url que usaremos para fazer login
-            "/users" //url que usaremos para criar um usuário
+            "/login.html",
+            "/auth/login",
+            "/users/login",
+            "/auth/register"
     };
 
     // Endpoints que requerem autenticação para serem acessados
@@ -50,6 +52,13 @@ public class SecurityConfiguration {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/login.html",
+                                "/css/**",
+                                "/js/**",
+                                "/auth/login"
+                        )
+                        .permitAll()
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED)
                         .permitAll()
                         .requestMatchers(ENDPOINTS_ADMIN)

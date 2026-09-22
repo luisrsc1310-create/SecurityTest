@@ -29,26 +29,39 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
     private UserRepository userRepository; // Repository que definimos anteriormente
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // Verifica se o endpoint requer autenticação antes de processar a requisição
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+
         if (checkIfEndpointIsNotPublic(request)) {
-            String token = recoveryToken(request); // Recupera o token do cabeçalho Authorization da requisição
+
+            String token = recoveryToken(request);
+
             if (token != null) {
-                String subject = jwtTokenService.getSubjectFromToken(token); // Obtém o assunto (neste caso, o nome de usuário) do token
-                User user = userRepository.findByEmail(subject).get(); // Busca o usuário pelo email (que é o assunto do token)
-                UserDetailsImpl userDetails = new UserDetailsImpl(user); // Cria um UserDetails com o usuário encontrado
 
-                // Cria um objeto de autenticação do Spring Security
+                String subject = jwtTokenService.getSubjectFromToken(token);
+
+                User user = userRepository.findByEmail(subject).get();
+
+                UserDetailsImpl userDetails =
+                        new UserDetailsImpl(user);
+
                 Authentication authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails.getUsername(),
+                                null,
+                                userDetails.getAuthorities()
+                        );
 
-                // Define o objeto de autenticação no contexto de segurança do Spring Security
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                throw new RuntimeException("O token está ausente.");
+                SecurityContextHolder
+                        .getContext()
+                        .setAuthentication(authentication);
             }
         }
-        filterChain.doFilter(request, response); // Continua o processamento da requisição
+
+        filterChain.doFilter(request, response);
     }
 
     // Recupera o token do cabeçalho Authorization da requisição
