@@ -20,11 +20,18 @@ public class JwtTokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
 
+            String role = user.getAuthorities()
+                    .stream()
+                    .findFirst()
+                    .get()
+                    .getAuthority();
+
             return JWT.create()
                     .withIssuer(ISSUER)
                     .withIssuedAt(creationDate())
                     .withExpiresAt(expirationDate())
                     .withSubject(user.getUsername())
+                    .withClaim("role", role)
                     .sign(algorithm);
 
         } catch (Exception e) {

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -21,6 +23,8 @@ public class UserController {
         RecoveryJwtTokenDto token = userService.authenticateUser(loginUserDto);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
+
+
 
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody CreateUserDTO createUserDto) {
@@ -40,7 +44,9 @@ public class UserController {
 
     @GetMapping("/test/administrator")
     public ResponseEntity<String> getAdminAuthenticationTest() {
-        return new ResponseEntity<>("Administrador autenticado com sucesso", HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.FOUND) // 302 Redirect
+                .location(URI.create("https://localhost:8080/home.html"))
+                .build();
     }
 
 }

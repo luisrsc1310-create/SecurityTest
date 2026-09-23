@@ -26,22 +26,30 @@ public class SecurityConfiguration {
             "/login.html",
             "/auth/login",
             "/users/login",
-            "/auth/register"
+            "/auth/register",
+            "/admin.html"
+
     };
 
     // Endpoints que requerem autenticação para serem acessados
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
-            "/users/test"
+            "/users/test",
+            "/login.html"
+
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de cliente
     public static final String [] ENDPOINTS_CUSTOMER = {
-            "/users/test/customer"
+            "/users/test/customer",
+            "/customer.html",
+
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de administrador
     public static final String [] ENDPOINTS_ADMIN = {
-            "/users/test/administrator"
+            "/users/test/administrator",
+            "/admin.html"
+
     };
 
     @Bean
@@ -56,7 +64,9 @@ public class SecurityConfiguration {
                                 "/login.html",
                                 "/css/**",
                                 "/js/**",
-                                "/auth/login"
+                                "/auth/login",
+                                "/users/login",
+                                "/auth/register"
                         )
                         .permitAll()
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED)

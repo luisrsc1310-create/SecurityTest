@@ -33,8 +33,7 @@
 
 <script>
 
-    document
-        .getElementById("loginForm")
+    document.getElementById("loginForm")
         .addEventListener("submit", async function(event) {
 
             event.preventDefault();
@@ -42,33 +41,49 @@
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
-            const response = await fetch("http://localhost:8080/users/login", {
+            try {
 
-                method: "POST",
+                const response = await fetch("http://localhost:8080/users/login", {
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                    method: "POST",
 
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                })
-            });
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-            const data = await response.json();
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
 
-            if (response.ok) {
+                });
 
-                localStorage.setItem("token", data.token);
+                const data = await response.json();
+
+                if (response.ok) {
+
+                    localStorage.setItem("token", data.token);
+
+                    document.getElementById("message").textContent =
+                        "Login successful!";
+
+                    // Por enquanto, vamos apenas para a página
+                    // depois do login.
+                    window.location.href = "/admin.html";
+
+                } else {
+
+                    document.getElementById("message").textContent =
+                        "Invalid email or password.";
+
+                }
+
+            } catch (error) {
+
+                console.error(error);
 
                 document.getElementById("message").textContent =
-                    "Login successful!";
-
-            } else {
-
-                document.getElementById("message").textContent =
-                    "Invalid email or password.";
+                    "Error connecting to server.";
 
             }
 
