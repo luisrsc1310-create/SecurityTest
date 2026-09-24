@@ -23,32 +23,26 @@ public class SecurityConfiguration {
 
 
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            "/login.html",
-            "/auth/login",
             "/users/login",
-            "/auth/register",
-            "/admin.html"
+            "/error"
 
     };
 
     // Endpoints que requerem autenticação para serem acessados
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
-            "/users/test",
-            "/login.html"
+
 
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de cliente
     public static final String [] ENDPOINTS_CUSTOMER = {
-            "/users/test/customer",
-            "/customer.html",
+
 
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de administrador
     public static final String [] ENDPOINTS_ADMIN = {
-            "/users/test/administrator",
-            "/admin.html"
+
 
     };
 
@@ -56,6 +50,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable) // Lambda
+                .cors(cors -> {})
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -65,8 +60,7 @@ public class SecurityConfiguration {
                                 "/css/**",
                                 "/js/**",
                                 "/auth/login",
-                                "/users/login",
-                                "/auth/register"
+                                "/users/login"
                         )
                         .permitAll()
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED)

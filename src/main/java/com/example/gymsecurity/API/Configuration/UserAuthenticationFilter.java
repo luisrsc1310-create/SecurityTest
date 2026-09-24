@@ -35,7 +35,19 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
+        if (request.getMethod().equals("OPTIONS")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (request.getServletPath().equals("/users/login")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if (checkIfEndpointIsNotPublic(request)) {
+
+
 
             String token = recoveryToken(request);
 
